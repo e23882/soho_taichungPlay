@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>台中旅遊網</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>   
+  </head>
+  <body>
+    <div></div>
+
+  </body>
+</html>>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.ajax({
+        url:"getRestaurant.php",
+        type:"POST",
+        success:function(i,j){
+          console.log(i,j);
+        },
+        error:function(xhr){
+            alert('Ajax request 發生錯誤');
+        },
+        complete:function(){
+            $('#loading_div').hide();
+            //$('#user_login').hide();         
+            //complete請求完成實執行的函式，不管是success或是error
+        }
+    });    
+  })
+
+</script>
