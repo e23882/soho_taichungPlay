@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
     <title>台中旅遊網</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/custom.css" rel="stylesheet"/>
-
+	<link href="css/RWD.css" rel="stylesheet"/>
   </head>
   <body style="background-image: url('images/back.jpg');">
     <nav class="navbar navbar-default">
@@ -26,14 +27,8 @@
               <a href="index.php">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left" role="search"  method="post" action="login.php">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default">找找</button>
-              <span id="login_showname"></span>
-            </form>
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
+           <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
 			<li>
 			<?php
 				session_start();
@@ -44,6 +39,7 @@
 				else
 					echo "<button type='button' class='btn btn-primary btn-lg' data-toggle='modal' data-target='#ModalLogin' id='login'>會員登入</button>";
 			?>
+			</form>
 			</li>
             
           </ul>
@@ -142,16 +138,14 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-
-	<div style="text-align:center;background-color:rgba(255, 255, 255, 0.3);padding:50px;text-align:center;">
+	<div class="blockDetail">
     <!--內容-->
-		<table style="margin-left:auto;margin-right:auto;text-align:left;font-size:30px;font-family:微軟正黑體;font-weight:bold;"class="table table-hover">
+		<table id="detailData" class="table table-hover">
 				<?php
 					require_once 'ConnectionFactory.php';
 					try
 					{
 						$conn = ConnectionFactory::getFactory()->getConnection();
-						
 						$stmt = $conn->prepare('select * from hotel where id = '.$_GET['id']);
 						$stmt->execute();
 						$result = $stmt->fetchAll(PDO::FETCH_CLASS);
@@ -164,7 +158,75 @@
 							echo "<tr><td>地址</td><td><b>".$value->address."</b></td></tr>";
 							echo "<tr><td>電話號碼</td><td><b>".$value->phoneNumber."</b></td></tr>";
 						}
-						echo "</table>";
+						if(isset($_SESSION["userID"])) 
+						{
+							$connUser = ConnectionFactory::getFactory()->getConnection();
+							$stmtUser = $connUser->prepare("select * from favorite where fid = ".$_GET['id']." and type = 'hotel' and userID =  '".$_SESSION["userID"]."'");
+							$stmtUser->execute();
+							$resultUser = $stmtUser->fetchAll(PDO::FETCH_CLASS);
+							$conn = null;
+							$dataCount = 0;
+							foreach ($resultUser as $valueUser) 
+							{
+								$dataCount++;
+							}
+							if(isset($_SESSION["user"])) 
+							{
+								if($dataCount>0)
+								{
+									echo "<a href='#' ><img id='heart' onclick=";
+									echo  "\"";
+									echo "changeHeart('hotel','".$_SESSION["userID"]."','".$_GET["id"]."')";
+									echo  "\"";
+									echo " src='images/like.png' ></a>";
+								}
+								else
+								{
+									echo "<a href='#' ><img id='heart' onclick=";
+									echo  "\"";
+									echo "changeHeart('hotel','".$_SESSION["userID"]."','".$_GET["id"]."')";
+									echo  "\"";
+									echo " src='images/notlike.png' ></a>";
+								}
+							}
+							echo "</table>";
+						}
+						else
+						{
+							$connUser = ConnectionFactory::getFactory()->getConnection();
+							$stmtUser = $connUser->prepare("select * from favorite where fid = ".$_GET['id']." and type = 'hotel'");
+							$stmtUser->execute();
+							$resultUser = $stmtUser->fetchAll(PDO::FETCH_CLASS);
+							$conn = null;
+							$dataCount = 0;
+							foreach ($resultUser as $valueUser) 
+							{
+								$dataCount++;
+							}
+							if(isset($_SESSION["user"])) 
+							{
+								if($dataCount>0)
+								{
+									//echo "<a href='#' ><img id='heart' onclick='changeHeart()' src='images/like.png' ></a>";
+									echo "<a href='#' ><img id='heart' onclick=";
+									echo  "\"";
+									echo "changeHeart('hotel','".$_SESSION["userID"]."','".$_GET["id"]."')";
+									echo  "\"";
+									echo " src='images/like.png' ></a>";
+								}
+								else
+								{
+									//echo "<a href='#' ><img id='heart' onclick='changeHeart('','','')' src='images/notlike.png' ></a>";
+									echo "<a href='#' ><img id='heart' onclick=";
+									echo  "\"";
+									echo "changeHeart('hotel','".$_SESSION["userID"]."','".$_GET["id"]."')";
+									echo  "\"";
+									echo " src='images/notlike.png' ></a>";
+								}
+							}
+							echo "</table>";
+						}
+						
 					}
 					catch (PDOException $e) 
 					{
@@ -172,7 +234,38 @@
 					}
 				?>
 	</div>
-	  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+	<script>
+	function changeHeart(table, user, tableID)
+	{
+		var x = document.getElementById("heart").getAttribute("src");
+		if (x=="images/like.png")
+		{
+			document.getElementById("heart").src="images/notlike.png";
+			
+			 $.ajax({
+				url: "cancelFavorite.php?table="+table+"&user="+user+"&tableID="+tableID, 
+			    context: document.body, 
+			    success: function(){ 
+			      alert('已取消我的最愛!'); 
+			    } 
+			  }); 
+		}
+		else
+		{
+			document.getElementById("heart").src="images/like.png";
+			 $.ajax({ 
+				url: "addFavorite.php?table="+table+"&user="+user+"&tableID="+tableID, 
+			    context: document.body, 
+			    success: function(){ 
+			      alert('已加入我的最愛!'); 
+			    } 
+			  }); 
+		}
+
+		
+	}
+	</script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>

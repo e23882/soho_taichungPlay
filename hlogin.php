@@ -26,14 +26,8 @@
               <a href="#">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default">找找</button>
-              <span id="login_showname"></span>
-            </form>
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
+           <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
             <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ModalLogin" id="login">會員登入</button></li>
             <li><button type="button" class="btn btn-primary btn-lg" id="logout" style="display: none">登出</button></li>
           </ul>

@@ -26,7 +26,7 @@
               <a href="index.php">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
            
 			<li>
 			<?php
@@ -137,7 +137,7 @@
   </a>
 </div>
     <!--內容-->
-	<div class="row"  style="margin-top:5%;margin-bottom:15%;">
+	<div class="row"  style="margin-top:5%;margin-bottom:15%;width:100%; position: absolute;left: 0;right: 0;margin-left: auto;margin-right: auto;">
 		
 		<?php
 				//呼叫資料庫

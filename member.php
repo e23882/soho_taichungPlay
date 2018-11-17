@@ -4,10 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
     <title>台中旅遊網</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/custom.css" rel="stylesheet"/>
-
+	<link href="css/RWD.css" rel="stylesheet"/>
+	<style>
+		td 	th
+		{
+			text-align:center;
+		}
+	</style>
   </head>
   <body style="background-image: url('images/back.jpg');">
     <nav class="navbar navbar-default">
@@ -137,23 +144,84 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+	<div style="text-align:center;background-color:rgba(255, 255, 255, 0.3);padding:50px;text-align:center;">
     <!--內容-->
-	<div class="row"  style="margin-top:5%;margin-bottom:15%;width:100%; position: absolute;left: 0;right: 0;margin-left: auto;margin-right: auto;">
-		
-		<div class="col-xs-6 col-md-4" style="text-align:center;">
-			<a href="montain.php"><img src="images/montain.png" style="border-radius:50%;width:60%;" alt=""/></a>
-		</div>
-		<div class="col-xs-6 col-md-4" style="text-align:center;">
-			<a href="sea.php"><img src="images/sea.png" style="border-radius:50%;width:60%;" alt=""/></a>
-		</div>
-		<div class="col-xs-6 col-md-4" style="text-align:center;">
-			<a href="book.php"><img src="images/book.png" style="border-radius:50%;width:60%;" alt=""/></a>
-		</div>
-		
+		<table id="tableMember"  class="table table-hover">
+				<?php
+					require_once 'ConnectionFactory.php';
+					if(isset($_SESSION["user"])) 
+					{
+						try
+						{
+							$conn = ConnectionFactory::getFactory()->getConnection();
+							//$stmt = $conn->prepare('select * from favorite where userID = '.$_SESSION["userID"];
+							$stmt = $conn->prepare("SELECT a.logDate as 'Date', b.name as 'Name',a.type as 'type' FROM `favorite` a left join hotel b on a.fid = b.id where a.type ='hotel' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.restName as 'Name',a.type as 'type' FROM `favorite` a left join restaurant b on a.fid = b.id where a.type ='restaurant' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.Name as 'Name',a.type as 'type' FROM `favorite` a left join attractions b on a.fid = b.id where a.type ='attractions' and a.userID = '".$_SESSION["userID"]."'");
+							$stmt->execute();
+							$result = $stmt->fetchAll(PDO::FETCH_CLASS);
+							$conn = null;
+							echo "<th>最愛景點名稱</th><th>加入最愛日期</th>><th>類型</th>";
+							foreach ($result as $value) 
+							{
+								echo "<tr><td><b>".$value->Name."</b></td><td><b>".$value->Date."</b></td><td><b>";
+								if($value->type=="attractions")
+									echo "人文";
+								else if($value->type=="hotel")
+									echo "旅館";
+								else
+									echo "餐廳";
+							echo "</b></td></tr>";
+								
+							}
+							
+							echo "</table>";
+						}
+						catch (PDOException $e) 
+						{
+							echo "<a href='index.php'>查詢不到物件</a>";
+						}
+					}
+					else
+					{
+						echo "<div class='showError'>尚未登入會員</div>";
+					}
+					
+					
+				?>
 	</div>
-     
-	
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
+	<script>
+	function changeHeart(table, user, tableID)
+	{
+		alert(table+user+tableID);
+		var x = document.getElementById("heart").getAttribute("src");
+		
+		if (x=="images/like.png")
+		{
+			document.getElementById("heart").src="images/notlike.png";
+			
+			 $.ajax({
+				url: "cancelFavorite.php?table="+table+"&user="+user+"&tableID="+tableID, 
+			    context: document.body, 
+			    success: function(){ 
+			      alert('已取消我的最愛!'); 
+			    } 
+			  }); 
+		}
+		else
+		{
+			document.getElementById("heart").src="images/like.png";
+			 $.ajax({ 
+				url: "addFavorite.php?table="+table+"&user="+user+"&tableID="+tableID, 
+			    context: document.body, 
+			    success: function(){ 
+			      alert('已加入我的最愛!'); 
+			    } 
+			  }); 
+		}
+
+		
+	}
+	</script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>

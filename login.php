@@ -8,6 +8,7 @@
     <title>台中旅遊網</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
+	<link href="css/RWD.css" rel="stylesheet">
   </head>
   <body style="background-image: url('images/back.jpg');">
     <nav class="navbar navbar-default">
@@ -26,16 +27,11 @@
               <a href="#">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default">找找</button>
-              <span id="login_showname"></span>
-            </form>
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
+           <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
             <li><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#ModalLogin" id="login">會員登入</button></li>
             <li><button type="button" class="btn btn-primary btn-lg" id="logout" style="display: none">登出</button></li>
+			</form>
           </ul>
         </div>
       </div>
@@ -80,7 +76,7 @@
 			else			
 			{
 				$conn = ConnectionFactory::getFactory()->getConnection();
-				$stmt = $conn->prepare("select uName from user where uAccount = '".$_POST['ac']."' and uPassword = '".$_POST['password']."'");
+				$stmt = $conn->prepare("select uName, uAccount from user where uAccount = '".$_POST['ac']."' and uPassword = '".$_POST['password']."'");
 				$stmt->execute();
 				$result = $stmt->fetchAll(PDO::FETCH_CLASS);
 				$conn = null;
@@ -92,12 +88,13 @@
 				
 				if($count>0)
 				{
-					echo "<div style='font-family:微軟正黑體;z-index:100;font-weight:bold;font-size:25px;background-color:white;padding-left:80px;padding-right:80px;padding-top:20px;padding-bottom:20px;position:fixed;top:42%;left:35%;'>歡迎回來 ".$value->uName."</div>";
+					echo "<div class='showWelcome' style=''>歡迎回來 ".$value->uName."</div>";
 					session_start();
 					$_SESSION['user']=$value->uName;
+					$_SESSION['userID']=$value->uAccount;
 				}
 				else
-					echo "<div style='font-family:微軟正黑體;z-index:100;font-weight:bold;font-size:25px;background-color:white;padding-left:80px;padding-right:80px;padding-top:20px;padding-bottom:20px;position:fixed;top:42%;left:35%;'>密碼錯誤</div>";
+					echo "<div class='showError' style=''>密碼錯誤</div>";
 			}			
 		?>
 

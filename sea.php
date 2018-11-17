@@ -26,7 +26,7 @@
               <a href="index.php">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
             <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search" name='ac'>
@@ -143,7 +143,7 @@
   </a>
 </div>
     <!--內容-->
-	<div class="row"  style="margin-top:5%;margin-bottom:15%;">
+	<div class="row"  style="margin-top:5%;margin-bottom:15%;width:100%; position: absolute;left: 0;right: 0;margin-left: auto;margin-right: auto;">
 		
 		<?php
 				//呼叫資料庫

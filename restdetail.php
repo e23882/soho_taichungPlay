@@ -7,7 +7,7 @@
     <title>台中旅遊網</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/custom.css" rel="stylesheet"/>
-
+	<link href="css/RWD.css" rel="stylesheet"/>
   </head>
   <body style="background-image: url('images/back.jpg');">
     <nav class="navbar navbar-default">
@@ -26,10 +26,10 @@
               <a href="index.php">Home<span class="sr-only">(current)</span></a>
             </li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
+          <ul class="nav navbar-nav navbar-right" id="topMenu">
+			<form class="navbar-form navbar-left" role="search"  method="post" action="searchResult.php">
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name='ac'>
+                <input type="text" class="form-control" placeholder="Search" name="rule">
               </div>
               <button type="submit" class="btn btn-default">找找</button>
               <span id="login_showname"></span>
@@ -142,9 +142,9 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-	<div style="text-align:center;background-color:rgba(255, 255, 255, 0.3);padding:50px;text-align:center;">
+	<div class="blockDetail">
     <!--內容-->
-		<table style="margin-left:auto;margin-right:auto;text-align:left;font-size:30px;font-family:微軟正黑體;font-weight:bold;"class="table table-hover">
+		<table id="detailData" class="table table-hover">
 				<?php
 					require_once 'ConnectionFactory.php';
 					try
