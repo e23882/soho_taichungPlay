@@ -158,7 +158,7 @@
 					foreach ($result as $value) 
 					{
 						echo "<div class='col-xs-6 col-md-3' id='itemStyle'>
-						<a href='hoteldatail.php?id=".$value->id."'><img src='images/hotel.png' style='border-radius:50%;width:60%;' /></a><br>
+						<a href='hoteldetail.php?id=".$value->id."'><img src='images/hotel.png' style='border-radius:50%;width:60%;' /></a><br>
 						<span id='Namestyle'>".$value->name."</span></div>";
 					}
 					
