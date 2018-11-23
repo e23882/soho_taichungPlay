@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-    <title>台中旅遊網</title>
+    <title>台中食住網</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/custom.css" rel="stylesheet"/>
 	<link href="css/RWD.css" rel="stylesheet"/>
@@ -115,35 +115,38 @@
 </div>
   
 <!-- 移動式訊息區塊 -->
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-  </ol>
-
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img src="images/01.jpg" alt="...">
-      
-    </div>
-    <div class="item">
-      <img src="https://travel.taichung.gov.tw/Utility/DisplayImage?id=27344&prefix=original_" alt="...">
-      <div class="carousel-caption">
-      </div>
-    </div>
-  </div>
-
-  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		  <li data-target="#myCarousel" data-slide-to="1"></li>
+		  <li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="images/01.jpg" alt="Los Angeles" style="width:100%;">
+			</div>
+			<div class="item">
+				<img src="images/02.jpg" alt="Chicago" style="width:100%;"/>
+			</div>
+			<div class="item">
+				<img src="images/03.jpg" alt="New York" style="width:100%;">
+			</div>
+			<div class="item">
+				<img src="images/04.jpg" alt="New York" style="width:100%;">
+			</div>
+		</div>
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+		  <span class="glyphicon glyphicon-chevron-left"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+		  <span class="glyphicon glyphicon-chevron-right"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	</div>
 	<div style="text-align:center;background-color:rgba(255, 255, 255, 0.3);padding:50px;text-align:center;">
     <!--內容-->
 		<table id="tableMember"  class="table table-hover">
@@ -155,22 +158,29 @@
 						{
 							$conn = ConnectionFactory::getFactory()->getConnection();
 							//$stmt = $conn->prepare('select * from favorite where userID = '.$_SESSION["userID"];
-							$stmt = $conn->prepare("SELECT a.logDate as 'Date', b.name as 'Name',a.type as 'type' FROM `favorite` a left join hotel b on a.fid = b.id where a.type ='hotel' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.restName as 'Name',a.type as 'type' FROM `favorite` a left join restaurant b on a.fid = b.id where a.type ='restaurant' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.Name as 'Name',a.type as 'type' FROM `favorite` a left join attractions b on a.fid = b.id where a.type ='attractions' and a.userID = '".$_SESSION["userID"]."'");
+							$stmt = $conn->prepare("SELECT a.logDate as 'Date', b.name as 'Name', b.id as 'ID',a.type as 'type' FROM `favorite` a left join hotel b on a.fid = b.id where a.type ='hotel' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.restName as 'Name', b.id as 'ID',a.type as 'type' FROM `favorite` a left join restaurant b on a.fid = b.id where a.type ='restaurant' and a.userID = '".$_SESSION["userID"]."' UNION  SELECT a.logDate as 'Date', b.Name as 'Name', b.id as 'ID',a.type as 'type' FROM `favorite` a left join attractions b on a.fid = b.id where a.type ='attractions' and a.userID = '".$_SESSION["userID"]."'");
 							$stmt->execute();
 							$result = $stmt->fetchAll(PDO::FETCH_CLASS);
 							$conn = null;
 							echo "<th>最愛景點名稱</th><th>加入最愛日期</th>><th>類型</th>";
 							foreach ($result as $value) 
 							{
-								echo "<tr><td><b>".$value->Name."</b></td><td><b>".$value->Date."</b></td><td><b>";
 								if($value->type=="attractions")
+								{
+									echo "<tr><td><a href='viewdetail.php?id=".$value->ID."'><b>".$value->Name."</b></a></td><td><b>".$value->Date."</b></td><td><b>";
 									echo "人文";
+								}
 								else if($value->type=="hotel")
+								{
+									echo "<tr><td><a href='hoteldetail.php?id=".$value->ID."'><b>".$value->Name."</b></a></td><td><b>".$value->Date."</b></td><td><b>";
 									echo "旅館";
+								}
 								else
+								{
+									echo "<tr><td><a href='detail.php?id=".$value->ID."'><b>".$value->Name."</b></a></td><td><b>".$value->Date."</b></td><td><b>";
 									echo "餐廳";
+								}
 							echo "</b></td></tr>";
-								
 							}
 							
 							echo "</table>";

@@ -3,9 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!--for RWD-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>台中旅遊網</title>
+    <title>台中食住網</title>
+	<!--引用boostrap-->
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
     <link href="css/custom.css" rel="stylesheet"/>
 	<link href="css/reset.css" rel="stylesheet"/>
 	<link href="css/RWD.css" rel="stylesheet"/>
@@ -114,36 +117,39 @@
   </div>
 </div>
   
-<!-- 移動式訊息區塊 -->
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-  </ol>
-
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img src="images/01.jpg" alt="...">
-      
-    </div>
-    <div class="item">
-      <img src="https://travel.taichung.gov.tw/Utility/DisplayImage?id=27344&prefix=original_" alt="...">
-      <div class="carousel-caption">
-      </div>
-    </div>
-  </div>
-
-  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
+	<!-- 移動式訊息區塊 -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		  <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		  <li data-target="#myCarousel" data-slide-to="1"></li>
+		  <li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="images/01.jpg" alt="Los Angeles" style="width:100%;">
+			</div>
+			<div class="item">
+				<img src="images/02.jpg" alt="Chicago" style="width:100%;"/>
+			</div>
+			<div class="item">
+				<img src="images/03.jpg" alt="New York" style="width:100%;">
+			</div>
+			<div class="item">
+				<img src="images/04.jpg" alt="New York" style="width:100%;">
+			</div>
+		</div>
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+		  <span class="glyphicon glyphicon-chevron-left"></span>
+		  <span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+		  <span class="glyphicon glyphicon-chevron-right"></span>
+		  <span class="sr-only">Next</span>
+		</a>
+	</div>
     <!--內容-->
 	<div class="row"  style="margin-top:5%;margin-bottom:15%;width:100%; position: absolute;left: 0;right: 0;margin-left: auto;margin-right: auto;">
 		

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>台中旅遊網 | 寵物餐廳</title>
+    <title>台中食住網 | 寵物餐廳</title>
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/custom.css" rel="stylesheet"/>
-
+	<link href="css/RWD.css" rel="stylesheet"/>
   </head>
   <body style="background-image: url('images/back.jpg');">
     <nav class="navbar navbar-default">
@@ -160,9 +160,9 @@
 					$count = 0;
 					foreach ($result as $value) 
 					{
-						echo "<div class='col-xs-6 col-md-3' style='text-align:center;background-color:rgba(255, 255, 255, 0.3);'>
+						echo "<div class='col-xs-6 col-md-3' id='itemStyle'>
 						<a href='detail.php?id=".$value->id."'><img src='images/rest.png' style='border-radius:50%;width:60%;' /></a><br>
-						<span style='padding:5px;font-family:微軟正黑體;font-weight:bold;font-size:22px;'>".$value->restName."</span></div>";
+						<span id='Namestyle'>".$value->restName."</span></div>";
 					}
 					
 				}
